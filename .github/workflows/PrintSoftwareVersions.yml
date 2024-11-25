@@ -1,0 +1,33 @@
+name: Print Software Versions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-processing-software:
+    name: Check Processing Software Versions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Display Node.js Version
+        run: |
+          echo "Node.js Version:"
+          node --version || echo "Node.js is not installed"
+
+  check-database-software:
+    name: Check Database Software Versions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Display PostgreSQL Version
+        run: |
+          echo "PostgreSQL Version:"
+          psql --version || echo "PostgreSQL is not installed"
