@@ -1,32 +1,34 @@
-name: Check Data Schema Code Convention
+name: Data Schema Code Convention
+
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  check_sql_code_convention:
+  sql_schema_lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v2
+      # Крок для перевірки репозиторію
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Install SQLLint
+      # Крок для встановлення Python та SQL Linter через pip
+      - name: Install SQL Linter (sqlfluff)
         run: |
           sudo apt-get update
-          sudo apt-get install sqlfluff
+          sudo apt-get install -y python3-pip
+          pip3 install sqlfluff
 
-      - name: Run SQL Lint on DataSchema.sql
+      # Крок для запуску SQL Linter на схемі даних
+      - name: Run SQL Linter on Data Schema
+        run: sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect=ansi
+
+      # Крок для перевірки норм іменування (можна використовувати ваш власний скрипт для перевірки)
+      - name: Check SQL Schema Naming Convention
         run: |
-          sqlfluff lint DataSchema.sql --rules L001,L002,L003 --verbose
-          
-      - name: Print result of SQLLint
-        run: |
-          if [ $? -eq 0 ]; then
-            echo "SQL code follows the conventions!"
-          else
-            echo "SQL code does not follow the conventions!"
-          fi
+          ./scripts/check_naming_conventions.sh $GITHUB_WORKSPACE/DataSchema.sql
+
+      # Завершення перевірки
+      - name: Complete the check
+        run: echo "Schema code conventions check completed"
