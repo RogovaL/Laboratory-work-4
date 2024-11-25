@@ -1,35 +1,23 @@
 name: Print Software Versions
-
 on:
   push:
     branches:
       - main
 
 jobs:
-  check-processing-software:
-    name: Check Processing Software Versions
+  PrintLanguageVersions:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Display Node.js Version
+      - name: Print Node.js version
         run: |
-          echo "=== Checking Node.js Version ==="
-          node --version || echo "Node.js is not installed"
-          echo "=== Node.js Check Completed ==="
+          echo "Checking Node.js version..."
+          node --version || echo "Node.js is not installed."
 
-  check-database-software:
-    name: Check Database Software Versions
+  PrintDBMSVersions:
     runs-on: ubuntu-latest
-
+    needs: [PrintLanguageVersions]  # Дочікуємось завершення PrintLanguageVersions
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Display PostgreSQL Version
+      - name: Print PostgreSQL version
         run: |
-          echo "=== Checking PostgreSQL Version ==="
-          psql --version || echo "PostgreSQL is not installed"
-          echo "=== PostgreSQL Check Completed ==="
+          echo "Checking PostgreSQL version..."
+          psql --version || echo "PostgreSQL is not installed."
