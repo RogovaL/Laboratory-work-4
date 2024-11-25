@@ -19,7 +19,7 @@ jobs:
           pip3 install sqlfluff
 
       - name: Run SQL Linter on Data Schema Modified
-        run: sqlfluff lint $GITHUB_WORKSPACE/DataSchemaModified.sql --dialect=postgresql
+        run: sqlfluff lint $GITHUB_WORKSPACE/DataSchemaModified.sql --dialect=anti
 
       - name: Complete the check
         run: echo "Schema code conventions check completed"
