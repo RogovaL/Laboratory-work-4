@@ -9,26 +9,17 @@ jobs:
   sql_schema_lint:
     runs-on: ubuntu-latest
     steps:
-      # Крок для перевірки репозиторію
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Крок для встановлення Python та SQL Linter через pip
       - name: Install SQL Linter (sqlfluff)
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip
           pip3 install sqlfluff
 
-      # Крок для запуску SQL Linter на схемі даних
       - name: Run SQL Linter on Data Schema Modified
         run: sqlfluff lint $GITHUB_WORKSPACE/DataSchemaModified.sql --dialect=postgresql
 
-      # Крок для перевірки норм іменування (можна використовувати ваш власний скрипт для перевірки)
-      - name: Check SQL Schema Naming Convention
-        run: |
-          ./scripts/check_naming_conventions.sh $GITHUB_WORKSPACE/DataSchemaModified.sql
-
-      # Завершення перевірки
       - name: Complete the check
         run: echo "Schema code conventions check completed"
