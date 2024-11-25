@@ -12,7 +12,18 @@ jobs:
       - name: Checkout Code in Repository
         uses: actions/checkout@v3
 
-      - name: Start SQL Linter
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install SQLFluff in Virtual Environment
         run: |
+          python -m venv venv
+          source venv/bin/activate
           pip install sqlfluff
+
+      - name: Run SQL Linter
+        run: |
+          source venv/bin/activate
           sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect mysql
