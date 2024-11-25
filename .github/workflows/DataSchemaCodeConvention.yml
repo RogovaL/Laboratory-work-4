@@ -1,0 +1,32 @@
+name: Check Data Schema Code Convention
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check_sql_code_convention:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Install SQLLint
+        run: |
+          sudo apt-get update
+          sudo apt-get install sqlfluff
+
+      - name: Run SQL Lint on DataSchema.sql
+        run: |
+          sqlfluff lint DataSchema.sql --rules L001,L002,L003 --verbose
+          
+      - name: Print result of SQLLint
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "SQL code follows the conventions!"
+          else
+            echo "SQL code does not follow the conventions!"
+          fi
