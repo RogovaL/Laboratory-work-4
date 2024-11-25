@@ -12,18 +12,16 @@ jobs:
       - name: Checkout Code in Repository
         uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10  # Актуальна версія Python
+          python-version: '3.10'  # Замінили на підтримувану версію Python
 
-      - name: Install SQLFluff in Virtual Environment
+      - name: Install SQLFluff
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          python -m pip install --upgrade pip
           pip install sqlfluff
 
       - name: Run SQL Linter
         run: |
-          source venv/bin/activate
-          sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect mysql
+          sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect oracle
