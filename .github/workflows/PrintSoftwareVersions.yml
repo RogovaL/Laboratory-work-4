@@ -16,8 +16,9 @@ jobs:
 
       - name: Display Node.js Version
         run: |
-          echo "Node.js Version:"
+          echo "=== Checking Node.js Version ==="
           node --version || echo "Node.js is not installed"
+          echo "=== Node.js Check Completed ==="
 
   check-database-software:
     name: Check Database Software Versions
@@ -29,5 +30,6 @@ jobs:
 
       - name: Display PostgreSQL Version
         run: |
-          echo "PostgreSQL Version:"
+          echo "=== Checking PostgreSQL Version ==="
           psql --version || echo "PostgreSQL is not installed"
+          echo "=== PostgreSQL Check Completed ==="
