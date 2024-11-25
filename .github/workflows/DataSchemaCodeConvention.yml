@@ -22,7 +22,7 @@ jobs:
 
       # Крок для запуску SQL Linter на схемі даних
       - name: Run SQL Linter on Data Schema
-        run: sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect=ansi
+        run: sqlfluff lint $GITHUB_WORKSPACE/DataSchemaModified.sql --dialect=ansi
 
       # Крок для перевірки норм іменування (можна використовувати ваш власний скрипт для перевірки)
       - name: Check SQL Schema Naming Convention
