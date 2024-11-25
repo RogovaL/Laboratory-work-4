@@ -47,7 +47,9 @@ CREATE TABLE `NavchalnyyModul` (
 -- Create Dostup table
 CREATE TABLE `Dostup` (
     `dostup_id` INT AUTO_INCREMENT PRIMARY KEY,
-    `status` VARCHAR(50) NOT NULL CHECK (`status` IN ('aktyvnyy', 'neaktyvnyy')),
+    `status` VARCHAR(50) NOT NULL CHECK (
+        `status` IN ('aktyvnyy', 'neaktyvnyy')
+    ),
     `data_nadannya` DATE NOT NULL,
     `dancivnyk_id` INT NOT NULL,
     FOREIGN KEY (`dancivnyk_id`) REFERENCES `Dancivnyk` (`dancivnyk_id`)
@@ -77,5 +79,3 @@ CREATE TABLE `Psyholog` (
     `dancivnyk_id` INT NOT NULL,
     FOREIGN KEY (`dancivnyk_id`) REFERENCES `Dancivnyk` (`dancivnyk_id`)
 );
-
--- Add regular expression constraints for name attributes (Note: MySQL doesn't support regular expression constraints as PostgreSQL does)
