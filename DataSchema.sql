@@ -1,72 +1,55 @@
--- Таблиця "Танцівник"
-CREATE TABLE Танцівник (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    ім'я VARCHAR(100) NOT NULL CHECK (ім'я REGEXP '^[А-ЯҐЄІЇа-яґєії\\s]+$'),
--- Для атрибуту ім'я Регулярний вираз '^[А-ЯҐЄІЇа-яґєії\\s]+$' забезпечує, що значення поля може містити лише літери українського алфавіту та пробіли.
-    вік INT NOT NULL CHECK (вік > 0)
+CREATE TABLE Dancer (
+    id INT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    age INT NOT NULL
 );
 
-
--- Таблиця "Анкета"
-CREATE TABLE Анкета (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    психологічний_стан VARCHAR(255) NOT NULL,
-    дата_заповнення DATE NOT NULL,
-    танцівник_id INT NOT NULL,
-    FOREIGN KEY (танцівник_id) REFERENCES Танцівник(id)
+CREATE TABLE Survey (
+    id INT PRIMARY KEY,
+    psychological_type VARCHAR(255),
+    completion_date DATE NOT NULL,
+    dancer_id INT NOT NULL,
+    FOREIGN KEY (dancer_id) REFERENCES Dancer(id)
 );
 
--- Таблиця "Звіт"
-CREATE TABLE Звіт (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    результат_аналізу TEXT NOT NULL,
-    рекомендації TEXT,
-    дата_створення DATE NOT NULL,
-    анкета_id INT NOT NULL,
-    openai_api_id INT NOT NULL,
-    FOREIGN KEY (анкета_id) REFERENCES Анкета(id),
-    FOREIGN KEY (openai_api_id) REFERENCES OpenAI_API(id)
+CREATE TABLE Report (
+    id INT PRIMARY KEY,
+    result TEXT NOT NULL,
+    recommendation TEXT,
+    creation_date DATE NOT NULL,
+    survey_id INT NOT NULL,
+    FOREIGN KEY (survey_id) REFERENCES Survey(id)
 );
 
--- Таблиця "НавчальнийМодуль"
-CREATE TABLE НавчальнийМодуль (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    назва VARCHAR(150) NOT NULL,
-    опис TEXT,
-    тривалість INT NOT NULL CHECK (тривалість > 0)
+CREATE TABLE Course (
+    id INT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    duration INT NOT NULL
 );
 
--- Таблиця "Доступ"
-CREATE TABLE Доступ (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    статус VARCHAR(50) NOT NULL CHECK (статус REGEXP '^(активний|неактивний)$'),
--- Для атрибуту статус Регулярний вираз '^(активний|неактивний)$' обмежує значення поля до допустимих варіантів: "активний" або "неактивний".
-    дата_надання DATE NOT NULL,
-    танцівник_id INT NOT NULL,
-    FOREIGN KEY (танцівник_id) REFERENCES Танцівник(id)
+CREATE TABLE Access (
+    id INT PRIMARY KEY,
+    status VARCHAR(50) NOT NULL,
+    granted_date DATE NOT NULL,
+    dancer_id INT NOT NULL,
+    FOREIGN KEY (dancer_id) REFERENCES Dancer(id)
 );
 
--- Таблиця "Повідомлення"
-CREATE TABLE Повідомлення (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    текст TEXT NOT NULL,
-    дата_надсилання DATETIME NOT NULL,
-    доступ_id INT NOT NULL,
-    FOREIGN KEY (доступ_id) REFERENCES Доступ(id)
+CREATE TABLE Notification (
+    id INT PRIMARY KEY,
+    message TEXT NOT NULL,
+    sent_date DATE NOT NULL,
+    access_id INT NOT NULL,
+    FOREIGN KEY (access_id) REFERENCES Access(id)
 );
 
--- Таблиця "OpenAI API"
-CREATE TABLE OpenAI_API (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    API VARCHAR(255) NOT NULL
-);
-
--- Таблиця "Психолог"
-CREATE TABLE Психолог (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    ім'я VARCHAR(100) NOT NULL,
-    напрям_роботи VARCHAR(150),
-    досвід_роботи INT CHECK (досвід_роботи >= 0),
-    танцівник_id INT NOT NULL,
-    FOREIGN KEY (танцівник_id) REFERENCES Танцівник(id)
+CREATE TABLE Psychologist (
+    id INT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    specialization VARCHAR(255),
+    experience INT NOT NULL,
+    dancer_id INT NOT NULL,
+    FOREIGN KEY (dancer_id) REFERENCES Dancer(id)
 );
