@@ -1,7 +1,7 @@
 -- Table "Dancer"
 CREATE TABLE Dancer (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL CHECK (name REGEXP '^[A-Za-zА-ЯҐЄІЇа-яґєії\\s]+$'),
+    name VARCHAR(100) NOT NULL CHECK (name REGEXP '^[A-Za-z\\s]+$'),
     age INT NOT NULL CHECK (age > 0)
 );
 
