@@ -1,4 +1,5 @@
 name: Print Software Versions
+
 on:
   push:
     branches:
@@ -11,13 +12,21 @@ jobs:
       - name: Print Node.js version
         run: |
           echo "Checking Node.js version..."
-          node --version || echo "Node.js is not installed."
+          if command -v node; then
+            node --version
+          else
+            echo "Node.js is not installed."
+          fi
 
   PrintDBMSVersions:
     runs-on: ubuntu-latest
-    needs: [PrintLanguageVersions]  # Дочікуємось завершення PrintLanguageVersions
+    needs: [PrintLanguageVersions]
     steps:
       - name: Print PostgreSQL version
         run: |
           echo "Checking PostgreSQL version..."
-          psql --version || echo "PostgreSQL is not installed."
+          if command -v psql; then
+            psql --version
+          else
+            echo "PostgreSQL is not installed."
+          fi
