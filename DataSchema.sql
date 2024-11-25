@@ -1,55 +1,71 @@
-CREATE TABLE Dancer (
-    id INT PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    age INT NOT NULL
+-- Таблиця "Танцівник"
+CREATE TABLE TANCUVNIK (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    IMYA VARCHAR(100) NOT NULL CHECK (IMYA REGEXP '^[А-ЯҐЄІЇа-яґєії\\s]+$'),
+    -- Регулярний вираз для перевірки українських літер та пробілів
+    VIK INT NOT NULL CHECK (VIK > 0)
 );
 
-CREATE TABLE Survey (
-    id INT PRIMARY KEY,
-    psychological_type VARCHAR(255),
-    completion_date DATE NOT NULL,
-    dancer_id INT NOT NULL,
-    FOREIGN KEY (dancer_id) REFERENCES Dancer(id)
+-- Таблиця "Анкета"
+CREATE TABLE ANKETA (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    PSYHOLOGICHNIY_STAN VARCHAR(255) NOT NULL,
+    DATA_ZAPOVNENNYA DATE NOT NULL,
+    TANCUVNIK_ID INT NOT NULL,
+    FOREIGN KEY (TANCUVNIK_ID) REFERENCES TANCUVNIK(ID)
 );
 
-CREATE TABLE Report (
-    id INT PRIMARY KEY,
-    result TEXT NOT NULL,
-    recommendation TEXT,
-    creation_date DATE NOT NULL,
-    survey_id INT NOT NULL,
-    FOREIGN KEY (survey_id) REFERENCES Survey(id)
+-- Таблиця "Звіт"
+CREATE TABLE ZVIT (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    REZULTAT_ANALIZU TEXT NOT NULL,
+    REKOMENDACII TEXT,
+    DATA_STVORENNYA DATE NOT NULL,
+    ANKETA_ID INT NOT NULL,
+    OPENAI_API_ID INT NOT NULL,
+    FOREIGN KEY (ANKETA_ID) REFERENCES ANKETA(ID),
+    FOREIGN KEY (OPENAI_API_ID) REFERENCES OPENAI_API(ID)
 );
 
-CREATE TABLE Course (
-    id INT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    duration INT NOT NULL
+-- Таблиця "НавчальнийМодуль"
+CREATE TABLE NAVCHALNIY_MODUL (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    NAZVA VARCHAR(150) NOT NULL,
+    OPIS TEXT,
+    TRIVALIST INT NOT NULL CHECK (TRIVALIST > 0)
 );
 
-CREATE TABLE Access (
-    id INT PRIMARY KEY,
-    status VARCHAR(50) NOT NULL,
-    granted_date DATE NOT NULL,
-    dancer_id INT NOT NULL,
-    FOREIGN KEY (dancer_id) REFERENCES Dancer(id)
+-- Таблиця "Доступ"
+CREATE TABLE DOSTUP (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    STATUS VARCHAR(50) NOT NULL CHECK (STATUS REGEXP '^(активний|неактивний)$'),
+    -- Регулярний вираз обмежує значення до "активний" або "неактивний"
+    DATA_NADANNYA DATE NOT NULL,
+    TANCUVNIK_ID INT NOT NULL,
+    FOREIGN KEY (TANCUVNIK_ID) REFERENCES TANCUVNIK(ID)
 );
 
-CREATE TABLE Notification (
-    id INT PRIMARY KEY,
-    message TEXT NOT NULL,
-    sent_date DATE NOT NULL,
-    access_id INT NOT NULL,
-    FOREIGN KEY (access_id) REFERENCES Access(id)
+-- Таблиця "Повідомлення"
+CREATE TABLE POVIDOMLENNYA (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    TEKST TEXT NOT NULL,
+    DATA_NADSILANNYA DATETIME NOT NULL,
+    DOSTUP_ID INT NOT NULL,
+    FOREIGN KEY (DOSTUP_ID) REFERENCES DOSTUP(ID)
 );
 
-CREATE TABLE Psychologist (
-    id INT PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    specialization VARCHAR(255),
-    experience INT NOT NULL,
-    dancer_id INT NOT NULL,
-    FOREIGN KEY (dancer_id) REFERENCES Dancer(id)
+-- Таблиця "OpenAI API"
+CREATE TABLE OPENAI_API (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    API VARCHAR(255) NOT NULL
+);
+
+-- Таблиця "Психолог"
+CREATE TABLE PSYHOLOG (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    IMYA VARCHAR(100) NOT NULL,
+    NAPRAYAM_ROBOTI VARCHAR(150),
+    DOSVID_ROBOTI INT CHECK (DOSVID_ROBOTI >= 0),
+    TANCUVNIK_ID INT NOT NULL,
+    FOREIGN KEY (TANCUVNIK_ID) REFERENCES TANCUVNIK(ID)
 );
