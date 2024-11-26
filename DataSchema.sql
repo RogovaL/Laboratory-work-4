@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS "Dancivnyk" CASCADE;
 
 -- Create Dancivnyk table
 CREATE TABLE "Dancivnyk" (
-    "dancivnyk_id" SERIAL PRIMARY KEY,
+     SERIAL PRIMARY KEY,
     "imya" VARCHAR(100) NOT NULL,
     "vik" INT NOT NULL CHECK ("vik" > 0)
 );
