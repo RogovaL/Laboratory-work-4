@@ -19,4 +19,4 @@ jobs:
       # Виконуємо перевірку SQL-коду
       - name: Run SQL Linter
         run: |
-          sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect mysql
+          sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect postgres
