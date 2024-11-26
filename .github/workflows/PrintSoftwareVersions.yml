@@ -12,8 +12,8 @@ jobs:
       - name: Print Operating System (Client)
         run: uname -a  # Print information about the client operating system
 
-      - name: Print Web Framework (React)
-        run: npx create-react-app --version  # Print React version as an example of a web framework
+      - name: Print React CLI Version
+        run: npx create-react-app --version  # Print React CLI version
 
       - name: Print Node.js Version (Server)
         run: node --version  # Print the version of Node.js used on the server
@@ -23,5 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [PrintClientAndServerSoftwareVersions]
     steps:
+      - name: Install PostgreSQL Client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client  # Install PostgreSQL client
+
       - name: Print PostgreSQL Version
-        run: postgres --version  # Print the version of MySQL as an example of a database
+        run: psql --version  # Print the version of PostgreSQL client
