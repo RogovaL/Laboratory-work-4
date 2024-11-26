@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS "Dancivnyk" CASCADE;
 
 -- Create Dancivnyk table
 CREATE TABLE "Dancivnyk" (
-     SERIAL PRIMARY KEY,
+    "dancivnyk_id" SERIAL PRIMARY KEY,
     "imya" VARCHAR(100) NOT NULL,
     "vik" INT NOT NULL CHECK ("vik" > 0)
 );
@@ -21,7 +21,9 @@ CREATE TABLE "Anketa" (
     "psyhologichnyy_stan" VARCHAR(255) NOT NULL,
     "data_zapovnennya" DATE NOT NULL,
     "dancivnyk_id" INT NOT NULL,
-    FOREIGN KEY ("dancivnyk_id") REFERENCES "Dancivnyk" ("dancivnyk_id")
+    CONSTRAINT "fk_anketa_dancivnyk"
+        FOREIGN KEY ("dancivnyk_id") REFERENCES "Dancivnyk" ("dancivnyk_id")
+        ON DELETE CASCADE
 );
 
 -- Create Zvit table
@@ -32,8 +34,12 @@ CREATE TABLE "Zvit" (
     "data_stvorennya" DATE NOT NULL,
     "anketa_id" INT NOT NULL,
     "openai_api_id" INT NOT NULL,
-    FOREIGN KEY ("anketa_id") REFERENCES "Anketa" ("anketa_id"),
-    FOREIGN KEY ("openai_api_id") REFERENCES "OpenAI_API" ("openai_api_id")
+    CONSTRAINT "fk_zvit_anketa"
+        FOREIGN KEY ("anketa_id") REFERENCES "Anketa" ("anketa_id")
+        ON DELETE CASCADE,
+    CONSTRAINT "fk_zvit_openai_api"
+        FOREIGN KEY ("openai_api_id") REFERENCES "OpenAI_API" ("openai_api_id")
+        ON DELETE CASCADE
 );
 
 -- Create NavchalnyyModul table
@@ -52,7 +58,9 @@ CREATE TABLE "Dostup" (
     ),
     "data_nadannya" DATE NOT NULL,
     "dancivnyk_id" INT NOT NULL,
-    FOREIGN KEY ("dancivnyk_id") REFERENCES "Dancivnyk" ("dancivnyk_id")
+    CONSTRAINT "fk_dostup_dancivnyk"
+        FOREIGN KEY ("dancivnyk_id") REFERENCES "Dancivnyk" ("dancivnyk_id")
+        ON DELETE CASCADE
 );
 
 -- Create Povidomlennya table
@@ -61,7 +69,9 @@ CREATE TABLE "Povidomlennya" (
     "tekst" TEXT NOT NULL,
     "data_nadslannya" TIMESTAMP NOT NULL,
     "dostup_id" INT NOT NULL,
-    FOREIGN KEY ("dostup_id") REFERENCES "Dostup" ("dostup_id")
+    CONSTRAINT "fk_povidomlennya_dostup"
+        FOREIGN KEY ("dostup_id") REFERENCES "Dostup" ("dostup_id")
+        ON DELETE CASCADE
 );
 
 -- Create OpenAI_API table
@@ -77,5 +87,7 @@ CREATE TABLE "Psyholog" (
     "napryam_roboti" VARCHAR(150),
     "dosvid_roboti" INT CHECK ("dosvid_roboti" >= 0),
     "dancivnyk_id" INT NOT NULL,
-    FOREIGN KEY ("dancivnyk_id") REFERENCES "Dancivnyk" ("dancivnyk_id")
+    CONSTRAINT "fk_psyholog_dancivnyk"
+        FOREIGN KEY ("dancivnyk_id") REFERENCES "Dancivnyk" ("dancivnyk_id")
+        ON DELETE CASCADE
 );
